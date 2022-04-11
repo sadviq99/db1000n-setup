@@ -12,8 +12,6 @@ CONFIG_URL=\$(docker compose -f /root/db1000n/examples/docker/static-docker-comp
 
 message=\"Host: \$(hostname)\"
 message+=\"%0A\"
-message+=\$(docker compose -f /root/db1000n/examples/docker/static-docker-compose.yml logs | grep -o \"Current country: [.a-zA-Z]*\" | tr -s ' ' | tail -n 1)
-message+=\"%0A\"
 message+=\$(docker compose -f /root/db1000n/examples/docker/static-docker-compose.yml logs | grep -o \"Generated.*|\" | sed 's/ ] /: /' | sed 's/ |//' | tr -s ' ' | tail -n 1)
 message+=\"%0A\"
 message+=\$(docker compose -f /root/db1000n/examples/docker/static-docker-compose.yml logs | grep -o \"Received.*|\" | sed 's/ ] /: /' | sed 's/ |//' | tr -s ' ' | tail -n 1)
