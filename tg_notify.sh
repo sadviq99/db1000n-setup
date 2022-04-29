@@ -8,8 +8,8 @@ set -x
 TG_TOKEN=\"YOUR TELEGRAM TOKEN\"
 TG_CHAT_ID=\"YOUR TELEGRAM CHAT ID\"
 
-CONFIG_URL=\$(docker-compose -f /root/db1000n/examples/docker/static-docker-compose.yml logs --tail=100 | grep -o "https://raw.*json" | uniq | tail -1)
-TOTAL=\$(docker-compose -f /root/db1000n/examples/docker/static-docker-compose.yml logs | grep -o \"Total.*\" | tail -n 1 | sed -e 's/[^[:digit:].-MB]/|/g' | tr -s '|' ' ')
+CONFIG_URL=\$(docker compose -f /root/db1000n/examples/docker/static-docker-compose.yml logs --tail=100 | grep -o "https://raw.*json" | uniq | tail -1)
+TOTAL=\$(docker compose -f /root/db1000n/examples/docker/static-docker-compose.yml logs | grep -o \"Total.*\" | tail -n 1 | sed -e 's/[^[:digit:].-MB]/|/g' | tr -s '|' ' ')
 VPN_CONFIG=$(ls /root/db1000n/openvpn/ | grep 'modified' | sed 's/.modified//g')
 
 ATTEMPTED=\$(echo \$TOTAL | cut -d' ' -f 1)
