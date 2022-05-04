@@ -1,16 +1,30 @@
 #!/bin/sh
 
+if [ -f tg_vars.sh ] 
+then 
+   . ./tg_vars.sh 
+fi
+
+if [ -z ${TG_TOKEN+x} ]; 
+then 
+  # Ask the user for login details
+  read -p 'TG_TOKEN: ' TG_TOKEN
+  read -p 'TG_CHAT_ID: ' TG_CHAT_ID
+  echo "TG_TOKEN=\"$TG_TOKEN\"" > tg_vars.sh
+  echo "TG_CHAT_ID=\"$TG_CHAT_ID\"" >> tg_vars.sh
+fi
+
 echo "
 #!/bin/bash
 
 set -x
 
-TG_TOKEN=\"YOUR TELEGRAM TOKEN\"
-TG_CHAT_ID=\"YOUR TELEGRAM CHAT ID\"
+TG_TOKEN=\"$TG_TOKEN\"
+TG_CHAT_ID=\"$TG_CHAT_ID\"
 
 CONFIG_URL=\$(docker compose -f /root/db1000n/examples/docker/static-docker-compose.yml logs --tail=100 | grep -o "https://raw.*json" | uniq | tail -1)
 TOTAL=\$(docker compose -f /root/db1000n/examples/docker/static-docker-compose.yml logs | grep -o \"Total.*\" | tail -n 1 | sed -e 's/[^[:digit:].-MB]/|/g' | tr -s '|' ' ')
-VPN_CONFIG=$(ls /root/db1000n/openvpn/ | grep 'modified' | sed 's/.modified//g')
+VPN_CONFIG=\$(ls /root/db1000n/openvpn/ | grep 'modified' | sed 's/.modified//g')
 
 ATTEMPTED=\$(echo \$TOTAL | cut -d' ' -f 1)
 SENT=\$(echo \$TOTAL | cut -d' ' -f 2)
